@@ -1,5 +1,5 @@
 {
-    "name": "gamerwalt/laravel-multi-db-tenant",
+    "name": "gamerwalt/LaraMultiDbTenant",
     "description": "This package is used to create and manage laravel multitenant applications",
     "license": "MIT",
     "keywords": ["laravel","multitenant"],
