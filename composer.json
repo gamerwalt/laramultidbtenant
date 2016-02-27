@@ -1,0 +1,24 @@
+{
+    "name": "gamerwalt/laravel-multi-db-tenant",
+    "description": "This package is used to create and manage laravel multitenant applications",
+    "license": "MIT",
+    "keywords": ["laravel","multitenant"],
+    "authors": [
+        {
+            "name": "Olawale Adewoyin",
+            "email": "gamerwalt@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/support": "^5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "gamerwalt\\Lara-Multi-Db-tenant\\": "src"
+        }
+    },
+    "minimum-stability": "dev"
+}
