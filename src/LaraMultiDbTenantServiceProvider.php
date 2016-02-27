@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace gamerwalt\LaraMultiDbTenant;
 
@@ -6,6 +6,13 @@ use Illuminate\Support\ServiceProvider;
 
 class LaraMultiDbTenantServiceProvider extends ServiceProvider
 {
+
+    /**
+     * Indicates if loading of the provider is deferred.
+     *
+     * @var bool
+     */
+    protected $defer = false;
 
     /**
      * Register the service provider.
@@ -23,12 +30,12 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
             return $laraMultiDbTenant;
         });
 
-        $this->app->alias('LaralMultiDbTenant', 'gamerwalt\LaraMultiDbTenant\LaraMultiDbTenant');
+        $this->app->alias('LaraMultiDbTenant', 'gamerwalt\LaraMultiDbTenant\LaraMultiDbTenant');
 
         $this->app['command.laramultidbtenant.migrations'] = $this->app->share(
-            function($app) {
-                return new Commands\MultiDbMigrationsCommand($app['LaralMultiDbTenant']);
-            }
+        function($app) {
+            return new Commands\MultiDbMigrationsCommand($app['LaraMultiDbTenant']);
+        }
         );
 
         $this->commands(array('command.laramultidbtenant.migrations'));
@@ -41,8 +48,6 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $app = $this->app;
-
         $configPath = __DIR__ . '/../config/laramultidbtenant.php';
         $this->publishes([$configPath => $this->getConfigPath()], 'config');
 
@@ -55,5 +60,13 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
 
         $laraMultidbTenant = $this->app['LaraMultiDbTenant'];
         $laraMultidbTenant->start($tenantModel);
+    }
+
+    /**
+     * Returns the config path for
+     */
+    private function getConfigPath()
+    {
+        return config_path('laramultidbtenant.php');
     }
 }

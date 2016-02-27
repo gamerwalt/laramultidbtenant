@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 namespace gamerwalt\LaraMultiDbTenant;
 
-class LaraMultiDbTenant 
+class LaraMultiDbTenant
 {
     /**
      * @type null
@@ -25,5 +25,10 @@ class LaraMultiDbTenant
         if( !$tenantModel){
             return;
         }
+    }
+
+    public function getLaravelApplication()
+    {
+        return $this->app;
     }
 } 
