@@ -35,6 +35,7 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('laramultitenantdb', 'gamerwalt\LaraMultiDbTenant\LaraMultiDbTenant');
+        $this->app->alias('authTenant', 'gamerwalt\LaraMultiDbTenant\AuthTenant');
 
         $this->app['command.tenant.migrations'] = $this->app->share(
             function($app) {
@@ -85,8 +86,6 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
         }
 
         $this->app['router']->middleware('authTenant', 'gamerwalt\LaraMultiDbTenant\AuthTenant');
-
-
 
         $laraMultidbTenant = $this->app['laramultitenantdb'];
         $laraMultidbTenant->boot($tenantModel, $prefix);
