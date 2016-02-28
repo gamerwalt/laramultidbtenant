@@ -2,6 +2,7 @@
 
 namespace gamerwalt\LaraMultiDbTenant;
 
+use Closure;
 use gamerwalt\LaraMultiDbTenant\Traits\TenantConnector;
 use Auth;
 
