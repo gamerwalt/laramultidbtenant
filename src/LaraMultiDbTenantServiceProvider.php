@@ -44,7 +44,7 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
 
         $this->app['command.tenant.basemodels'] = $this->app->share(
             function($app) {
-                return new BaseModelsCommand($app['laramultitenantdb'], $app['artisan']);
+                return new BaseModelsCommand($app['laramultitenantdb'], $this->app->make('Illuminate\Contracts\Console\Kernel'));
             }
         );
 
@@ -55,8 +55,8 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
             return new LaraMultiDbTenant($app['config'],$app);
         });
 
-        App::singleton('tenantdatabaseprovisioner', function($app){
-            return new MysqlDatabaseProvisioner($app['artisan']);
+        App::singleton('tenantdatabaseprovisioner', function(){
+            return new MysqlDatabaseProvisioner($this->app->make('Illuminate\Contracts\Console\Kernel'));
         });
 
         App::singleton('authTenant', function(){

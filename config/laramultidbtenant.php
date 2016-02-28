@@ -10,7 +10,7 @@ return array(
      | This is your main application host
      |
      | If the application is the same as the database host, leave this as is or else
-     | make sure to supply the private ip address of the application
+     | make sure to supply the private ip address of the application hostname or ip
      */
 
     'applicationHost' => '127.0.0.1',
