@@ -29,7 +29,7 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($configPath, 'laramultidbtenant');
 
         $this->app->singleton('LaraMultiDbTenant', function($app) {
-            $laraMultiDbTenant = new LaraMultiDbTenant($app('Illuminate\Config\Repository'),$app);
+            $laraMultiDbTenant = new LaraMultiDbTenant($app['config'],$app);
 
             return $laraMultiDbTenant;
         });
@@ -44,7 +44,7 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
 
         $this->app['command.tenant.basemodels'] = $this->app->share(
             function($app) {
-                return new BaseModelsCommand($app['laramultitenantdb'], $app('Illuminate\Contracts\Console\Kernel'));
+                return new BaseModelsCommand($app['laramultitenantdb'], $app['artisan']);
             }
         );
 
@@ -52,11 +52,11 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
         $this->commands(array('command.tenant.basemodels'));
 
         App::singleton('laramultitenantdb', function($app){
-            return new LaraMultiDbTenant(app('Illuminate\Config\Repository'),$app);
+            return new LaraMultiDbTenant($app['config'],$app);
         });
 
-        App::singleton('tenantdatabaseprovisioner', function(){
-            return new MysqlDatabaseProvisioner(app('Illuminate\Contracts\Console\Kernel'));
+        App::singleton('tenantdatabaseprovisioner', function($app){
+            return new MysqlDatabaseProvisioner($app['artisan']);
         });
 
         App::singleton('authTenant', function(){

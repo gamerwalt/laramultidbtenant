@@ -13,7 +13,7 @@ return array(
      | make sure to supply the private ip address of the application
      */
 
-    'applicationHost' => '192.168.0.10',
+    'applicationHost' => '127.0.0.1',
 
     /*
      |--------------------------------------------------------------------------
