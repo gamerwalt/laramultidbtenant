@@ -35,7 +35,6 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
         });
 
         $this->app->alias('laramultitenantdb', 'gamerwalt\LaraMultiDbTenant\LaraMultiDbTenant');
-        $this->app->alias('authTenant', 'gamerwalt\LaraMultiDbTenant\AuthTenant');
 
         $this->app['command.tenant.migrations'] = $this->app->share(
             function($app) {
@@ -58,6 +57,10 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
 
         App::singleton('tenantdatabaseprovisioner', function(){
             return new MysqlDatabaseProvisioner(app('Illuminate\Contracts\Console\Kernel'));
+        });
+
+        App::singleton('authTenant', function(){
+            return new AuthTenant();
         });
     }
 
