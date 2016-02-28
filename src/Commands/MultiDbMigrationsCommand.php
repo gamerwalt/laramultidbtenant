@@ -7,21 +7,21 @@ use Illuminate\Console\Command;
 
 
 
-class MultiDbMigrationsCommand extends Command
+class MultiDbFoldersCommand extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'laramultidbtenant:migrations';
+    protected $name = 'tenant:folders';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create the template and tenant migration folders';
+    protected $description = 'Create the template and tenant migration folders as well as the public folder for tenants';
 
     /**
      * @type \gamerwalt\LaraMultiDbTenant\LaraMultiDbTenant
@@ -41,7 +41,7 @@ class MultiDbMigrationsCommand extends Command
     /**
      * @type string
      */
-    private $tenantPublicDirectory = 'tenants';
+    private $tenantPublicDirectory = 'tenants/documents';
 
     /**
      * Constructs the MultiDbMigrationsCommand
@@ -71,19 +71,19 @@ class MultiDbMigrationsCommand extends Command
         $tenantPublicPath = $publicPath . DIRECTORY_SEPARATOR . $this->tenantPublicDirectory;
 
         if( !is_dir($templatePath)){
-            $this->info('Creating... ' . $templatePath);
+            $this->info("Creating the $templatePath for template migration tables");
             mkdir($templatePath, 0755, true);
             $this->info('Done.');
         }
 
         if( !is_dir($tenantPath)){
-            $this->info('We need to create the ' . $tenantPath);
+            $this->info("Creating the $tenantPath for tenant's migration tables");
             mkdir($tenantPath, 0755, true);
             $this->info('Done.');
         }
 
         if( !is_dir($tenantPublicPath)){
-            $this->info('We need to create the ' . $tenantPublicPath);
+            $this->info("Creating the $tenantPublicPath for public documents");
             mkdir($tenantPublicPath, 0755, true);
             $this->info('Done.');
         }

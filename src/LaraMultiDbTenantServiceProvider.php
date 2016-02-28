@@ -2,7 +2,10 @@
 
 namespace gamerwalt\LaraMultiDbTenant;
 
+use gamerwalt\LaraMultiDbTenant\Commands\TenantMigrationsCommand;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
+use App;
 
 class LaraMultiDbTenantServiceProvider extends ServiceProvider
 {
@@ -25,41 +28,75 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($configPath, 'laramultidbtenant');
 
         $this->app->singleton('LaraMultiDbTenant', function($app) {
-            $laraMultiDbTenant = new LaraMultiDbTenant($app);
+            $laraMultiDbTenant = new LaraMultiDbTenant($app('Illuminate\Config\Repository'),$app);
 
             return $laraMultiDbTenant;
         });
 
-        $this->app->alias('LaraMultiDbTenant', 'gamerwalt\LaraMultiDbTenant\LaraMultiDbTenant');
+        $this->app->alias('laramultitenantdb', 'gamerwalt\LaraMultiDbTenant\LaraMultiDbTenant');
 
-        $this->app['command.laramultidbtenant.migrations'] = $this->app->share(
+        $this->app['command.tenant.migrations'] = $this->app->share(
         function($app) {
-            return new Commands\MultiDbMigrationsCommand($app['LaraMultiDbTenant']);
+            return new Commands\MultiDbFoldersCommand($app['laramultitenantdb']);
         }
         );
 
-        $this->commands(array('command.laramultidbtenant.migrations'));
+        $this->app['command.tenant.basemodels'] = $this->app->share(
+        function($app) {
+            return new Commands\BaseModelsCommand($app['laramultitenantdb'], $app('Illuminate\Contracts\Console\Kernel'));
+        }
+        );
+
+        $this->commands(array('command.tenant.migrations'));
+        $this->commands(array('command.tenant.basemodels'));
+
+        App::singleton('laramultitenantdb', function($app){
+            return new LaraMultiDbTenant(app('Illuminate\Config\Repository'),$app);
+        });
+
+        App::singleton('tenantdatabaseprovisioner', function(){
+            return new MysqlDatabaseProvisioner(app('Illuminate\Contracts\Console\Kernel'));
+        });
     }
 
     /**
      * Bootstrap the application events
      *
+     * @param \Illuminate\Contracts\Http\Kernel $kernel
+     *
      * @return void
      */
-    public function boot()
+    public function boot(Kernel $kernel)
     {
+        $app = $this->app;
+
         $configPath = __DIR__ . '/../config/laramultidbtenant.php';
         $this->publishes([$configPath => $this->getConfigPath()], 'config');
 
-        $enabled = $this->app['config']->get('laramultidbtenant.enabled');
-        $tenantModel = $this->app['config']->get('laramultidbtenant.TenantModel');
+        $migrationsPath = __DIR__ . '/../migrations/';
+        $this->publishes([$migrationsPath => $this->getMigrationsPath()], 'migrations');
 
-        if ( ! $enabled) {
+        $prefix = $this->app['config']->get('laramultidbtenant.prefix');
+        $tenantModel = $this->app['config']->get('laramultidbtenant.tenantmodel');
+
+        if($app->runningInConsole()) {
             return;
         }
 
-        $laraMultidbTenant = $this->app['LaraMultiDbTenant'];
-        $laraMultidbTenant->start($tenantModel);
+        $kernel->pushMiddleware('gamerwalt\LaraMultiDbTenant\AuthTenant');
+
+        $laraMultidbTenant = $this->app['laramultitenantdb'];
+        $laraMultidbTenant->boot($tenantModel, $prefix);
+    }
+
+    /**
+     * Get the active router.
+     *
+     * @return Router
+     */
+    protected function getRouter()
+    {
+        return $this->app['router'];
     }
 
     /**
@@ -68,5 +105,13 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
     private function getConfigPath()
     {
         return config_path('laramultidbtenant.php');
+    }
+
+    /**
+     * Returns the migrations path for
+     */
+    private function getMigrationsPath()
+    {
+        return database_path('migrations');
     }
 }
