@@ -83,7 +83,7 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
             return;
         }
 
-        $kernel->pushMiddleware('gamerwalt\LaraMultiDbTenant\AuthTenant');
+        $this->app['router']->middleware('authTenant', 'gamerwalt\LaraMultiDbTenant\AuthTenant');
 
         $laraMultidbTenant = $this->app['laramultitenantdb'];
         $laraMultidbTenant->boot($tenantModel, $prefix);
