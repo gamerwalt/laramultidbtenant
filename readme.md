@@ -31,7 +31,7 @@ Setup the database for your Tenants in your .env files
 
 ### Create the needed model classes ###
 
-This will create the Tenant, TenantDatabase, TenantUser models. Make sure to provide the right relationships and don't forget to create the relationships within the [User, Tenant, TenantUser and TenantDatabase models](https://github.com/gamerwalt/TodoMultitenantDemo/tree/master/app)
+This will create the Tenant, TenantDatabase, TenantUser models. Make sure to provide the right relationships and don't forget to create the relationships within the [User, Tenant, TenantUser and TenantDatabase models](https://github.com/gamerwalt/TodoMultitenantDemo/tree/master/app) as well as set the connection properties.
 ```
 php artisan tenant:basemodels
 ```
@@ -79,7 +79,7 @@ Once that's done, start with registering a user, at least collect information ne
 $this->migrateTenantDatabase($tenantDatabase->hostname, $tenantDatabase->database_name, $tenantDatabase->user_name, $tenantDatabase->password);
 ```
 Use [this](https://github.com/gamerwalt/TodoMultitenantDemo) demo as a guide.
-See the postRegister function in the SessionsController
+See SessionsController@postRegister.
 This should show the code...
 ```
     $input = $request->all();
