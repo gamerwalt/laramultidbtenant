@@ -35,6 +35,18 @@ This will create the Tenant, TenantDatabase, TenantUser models. Make sure to pro
 ```
 php artisan tenant:basemodels
 ```
+```
+class Tenant extends Model
+{
+    protected $connection = 'todo';
+
+    protected $table = 'tenants';
+
+    protected $primaryKey = 'tenant_id';
+
+    protected $fillable = ['tenant_uid', 'company_name', 'short_company_name', 'database_prefix', 'address'];
+    .......
+```
 
 ### Create the template, tenant migration folders as well as a tenant public folder ###
 ```
