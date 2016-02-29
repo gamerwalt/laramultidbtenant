@@ -19,7 +19,7 @@ gamerwalt\LaraMultiDbTenant\LaraMultiDbTenantServiceProvider::class
 
 ### Facade ###
 ```
-LaraMultiDbTenant' => gamerwalt\LaraMultiDbTenant\Facade::class
+'LaraMultiDbTenant' => gamerwalt\LaraMultiDbTenant\Facade::class
 ```
 
 ### Configuration Files ###
