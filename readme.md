@@ -79,7 +79,7 @@ Once that's done, start with registering a user, at least collect information ne
 $this->migrateTenantDatabase($tenantDatabase->hostname, $tenantDatabase->database_name, $tenantDatabase->user_name, $tenantDatabase->password);
 ```
 Use [this](https://github.com/gamerwalt/TodoMultitenantDemo) demo as a guide.
-See SessionsController@postRegister.
+See the postRegister function in the SessionsController
 This should show the code...
 ```
     $input = $request->all();
