@@ -36,17 +36,13 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
 
         $this->app->alias('laramultitenantdb', 'gamerwalt\LaraMultiDbTenant\LaraMultiDbTenant');
 
-        $this->app['command.tenant.migrations'] = $this->app->share(
-            function($app) {
-                return new MultiDbFoldersCommand($app['laramultitenantdb']);
-            }
-        );
+        $this->app->singleton('command.tenant.migrations', function($app) {
+            return new MultiDbFoldersCommand($app['laramultitenantdb']);
+        });
 
-        $this->app['command.tenant.basemodels'] = $this->app->share(
-            function($app) {
-                return new BaseModelsCommand($app['laramultitenantdb'], $this->app->make('Illuminate\Contracts\Console\Kernel'));
-            }
-        );
+        $this->app->singleton('command.tenant.basemodels', function($app) {
+            return new BaseModelsCommand($app['laramultitenantdb'], $this->app->make('Illuminate\Contracts\Console\Kernel'));
+        });
 
         $this->commands(array('command.tenant.migrations'));
         $this->commands(array('command.tenant.basemodels'));
