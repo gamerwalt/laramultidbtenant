@@ -2,12 +2,12 @@
 
 namespace gamerwalt\LaraMultiDbTenant;
 
-use Exception;
+use DB;
 use gamerwalt\LaraMultiDbTenant\Contracts\IDatabaseProvisioner;
 use Illuminate\Contracts\Console\Kernel;
-use DB;
+use Illuminate\Database\Events\StatementPrepared;
+use Illuminate\Support\Facades\Event;
 use PDO;
-use PDOException;
 
 class MysqlDatabaseProvisioner implements IDatabaseProvisioner
 {
@@ -84,7 +84,9 @@ class MysqlDatabaseProvisioner implements IDatabaseProvisioner
         config(['database.connections.tenant_database.host' => $host]);
 
         DB::setDefaultConnection('tenant_database');
-        DB::connection()->setFetchMode(PDO::FETCH_ASSOC);
+        Event::listen(StatementPrepared::class, function ($event) {
+            $event->statement->setFetchMode(PDO::FETCH_OBJ);
+        });
         DB::reconnect('tenant_database');
     }
 
@@ -106,7 +108,9 @@ class MysqlDatabaseProvisioner implements IDatabaseProvisioner
         //we can now successfully connect to the database
         config(['database.connections.tenant_database.database' => $databaseName]);
         DB::setDefaultConnection('tenant_database');
-        DB::connection()->setFetchMode(PDO::FETCH_ASSOC);
+        Event::listen(StatementPrepared::class, function ($event) {
+            $event->statement->setFetchMode(PDO::FETCH_OBJ);
+        });
         DB::reconnect('tenant_database');
     }
 
