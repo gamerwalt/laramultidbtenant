@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/gamerwalt/laramultidbtenant.svg?branch=master)](https://travis-ci.org/gamerwalt/laramultidbtenant)
+[![Build Status](https://travis-ci.org/gamerwalt/laramultidbtenant.svg?branch=develop)](https://travis-ci.org/gamerwalt/laramultidbtenant)
 # Multi-Database Tenant Package for Laravel #
 This package is meant for Laravel applications to help with Multi-Database Tenant Applications.
 
