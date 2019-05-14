@@ -13,7 +13,7 @@
         "illuminate/support": "5.8",
         "illuminate/console": "5.8",
         "illuminate/config": "5.8",
-        "vlucas/phpdotenv": "3.3",
+        "vlucas/phpdotenv": "^3.3",
         "illuminate/database": "5.8",
         "illuminate/session": "5.8",
         "illuminate/auth": "5.8"
