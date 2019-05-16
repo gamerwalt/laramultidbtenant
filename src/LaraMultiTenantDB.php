@@ -2,7 +2,7 @@
 
 namespace gamerwalt\LaraMultiDbTenant;
 
-class Facade extends \Illuminate\Support\Facades\Facade
+class LaraMultiTenantDB extends \Illuminate\Support\Facades\Facade
 {
     /**
      * {@inheritDoc}
