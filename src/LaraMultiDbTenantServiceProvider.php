@@ -2,11 +2,12 @@
 
 namespace gamerwalt\LaraMultiDbTenant;
 
+use App;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Contracts\Http\Kernel;
 use gamerwalt\LaraMultiDbTenant\Commands\BaseModelsCommand;
 use gamerwalt\LaraMultiDbTenant\Commands\MultiDbFoldersCommand;
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Support\ServiceProvider;
-use App;
+use gamerwalt\LaraMultiDbTenant\Commands\ResyncMigrationCommand;
 
 class LaraMultiDbTenantServiceProvider extends ServiceProvider
 {
@@ -44,8 +45,13 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
             return new BaseModelsCommand($app['laramultitenantdb'], $this->app->make('Illuminate\Contracts\Console\Kernel'));
         });
 
+        $this->app->singleton('command.tenant.migrate-resync', function($app) {
+            return new ResyncMigrationCommand($app['laramultitenantdb'], $this->app->make('Illuminate\Contracts\Console\Kernel'), $this->app->make('gamerwalt\LaraMultiDbTenant\Migrator'));
+        });
+
         $this->commands(array('command.tenant.migrations'));
         $this->commands(array('command.tenant.basemodels'));
+        $this->commands(array('command.tenant.migrate-resync'));
 
         App::singleton('laramultitenantdb', function($app){
             return new LaraMultiDbTenant($app['config'],$app);
