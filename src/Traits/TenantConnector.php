@@ -30,6 +30,6 @@ trait TenantConnector
 
         $companyNameIdentifier = $tenantDatabaseModel->getCompanyNameIdentifier();
 
-        session()->put('company_name' , $tenantDatabaseModel->getTenant()->$companyNameIdentifier);
+        session()->put('company_name' , $tenantDatabaseModel->getTenant()->short_company_name);
     }
 }
