@@ -115,6 +115,15 @@ This should show the code...
                                      $tenantDatabase->user_name, $tenantDatabase->password);
 ```
 
+Resyncing and Updating Tables using migrations...
+Create new migration files for update
+
+php artisan make:migration add_column_to_todo_table --table=todos --path=database/migrations/tenant
+
+Once that's done, run the following commands
+
+php artisan tenant:migrate-resync
+
 # Questions #
 Twitter: [@gamerwalt](https://twitter.com/gamerwalt)
 
@@ -122,6 +131,6 @@ Twitter: [@gamerwalt](https://twitter.com/gamerwalt)
 1. Do some clean up of the code.
 1. Command for creating template and tenant migration files
 1. Command to migrate to template database
-1. Command to sync new migration files
+1. Command to sync new migration files (Done)
 1. Command to copy any needed data from template database to all tenant databases
 1. Add tests
