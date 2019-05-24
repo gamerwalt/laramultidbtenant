@@ -53,12 +53,10 @@ class ResyncMigrationCommand extends Command
 
         foreach($tenantsDatabases as $tenantDatabase)
         {
-            dd($tenantDatabase->tenant->company_name);
-
             $hostName = $tenantDatabase->hostname;
             $databaseName = $tenantDatabase->database_name;
 
-            $this->info('Migrating database for ' . $tenantDatabase->tenant->company_name);
+            $this->info('Migrating an update to database for ' . $tenantDatabase->tenant->company_name);
             $this->info('Database Name ' . $databaseName);
             $this->info('Host Name ' . $hostName);
 
