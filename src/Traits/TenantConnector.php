@@ -28,10 +28,12 @@ trait TenantConnector
 
         app('db')->setDefaultConnection('tenant_database');
 
-        $companyNameIdentifier = $tenantDatabaseModel->getCompanyNameIdentifier();
+        //$companyNameIdentifier = $tenantDatabaseModel->getCompanyNameIdentifier();
 
         session()->put('short_company_name' , $tenantDatabaseModel->getTenant()->short_company_name);
         session()->put('company_name' , $tenantDatabaseModel->getTenant()->company_name);
         session()->put('display_name' , $tenantDatabaseModel->getTenant()->display_name);
+        session()->put('current_tenant_uid', $tenantDatabaseModel->getTenant()->tenant_uid);
+        session()->put('current_tenant_id', $tenantDatabaseModel->getTenant()->tenant_id);
     }
 }
