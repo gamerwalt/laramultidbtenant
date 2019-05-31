@@ -1,6 +1,7 @@
 {
     "name": "gamerwalt/laramultidbtenant",
-    "description": "This package is used to create and manage laravel multitenant applications",
+    "description": "This package is used to create and manage laravel multitenant applications that also creates and migrates multiple databases per tenant",
+    "keywords": ["laravel", "multitenant", "tenant", "multiple-database"],
     "license": "MIT",
     "authors": [
         {
@@ -25,6 +26,19 @@
         "psr-4": {
             "gamerwalt\\LaraMultiDbTenant\\": "src"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "gamerwalt\\LaraMultiDbTenant\\LaraMultiDbTenantServiceProvider"
+            ],
+            "aliases": {
+                "LaraMultiTenantDB": "gamerwalt\\LaraMultiDbTenant\\LaraMultiTenantDB"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true
     },
     "minimum-stability":"dev"
 }

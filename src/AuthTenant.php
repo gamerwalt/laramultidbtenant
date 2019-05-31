@@ -18,8 +18,28 @@ class AuthTenant
      */
     public function handle($request, Closure $next)
     {
-        $tenantDatabase = Auth::user()->tenantUser->tenant->tenantDatabase;
+        $tenantUsers = Auth::user()->tenantUser()->get();
 
+        if($tenantUsers->count() > 1)
+        {
+            if(session('selected-tenant') === null)
+            {
+                return redirect('/tenants/select');
+            }
+
+            foreach($tenantUsers as $tenantUser) {
+                if($tenantUser->tenant->tenant_uid === session('selected-tenant')) {
+                    $tenantDatabase = $tenantUser->tenant->tenantDatabase()->first();
+                }
+            }
+
+            $this->resolveDatabase($tenantDatabase);
+    
+            return $next($request);
+        }
+
+        $tenantDatabase = Auth::user()->tenantUser->tenant->tenantDatabase;
+        
         $this->resolveDatabase($tenantDatabase);
 
         return $next($request);
