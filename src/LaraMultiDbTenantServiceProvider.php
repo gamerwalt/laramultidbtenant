@@ -52,6 +52,9 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
         $prefix = $this->app['config']->get('laramultidbtenant.prefix');
         $tenantModel = $this->app['config']->get('laramultidbtenant.tenantmodel');
 
+        $this->registerRoutes();
+        $this->registerResources();
+
         if($app->runningInConsole()) {
             return;
         }
@@ -60,6 +63,30 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
 
         $laraMultidbTenant = $this->app['laramultitenantdb'];
         $laraMultidbTenant->boot($tenantModel, $prefix);
+    }
+
+    /**
+     * Register the Horizon routes.
+     *
+     * @return void
+     */
+    protected function registerRoutes()
+    {
+        $this->getRouter()->group([
+            'namespace' => 'gamerwalt\LaraMultiDbTenant\Http\Controllers',
+        ], function () {
+            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        });
+    }
+
+    /**
+     * Register the Horizon resources.
+     *
+     * @return void
+     */
+    protected function registerResources()
+    {
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'tenants');
     }
 
 
