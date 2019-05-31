@@ -115,14 +115,45 @@ This should show the code...
                                      $tenantDatabase->user_name, $tenantDatabase->password);
 ```
 
-Resyncing and Updating Tables using migrations...
-Create new migration files for update
+### Resyncing and Updating Tables using migrations... ###
+**Create new migration files for update**
 
 php artisan make:migration add_column_to_todo_table --table=todos --path=database/migrations/tenant
 
 Once that's done, run the following commands
 
 php artisan tenant:migrate-resync
+
+### Multiple Tenants Per User ###
+**To support a user with multiple tenants, make sure within your routes file you have the following...**
+```
+Route::get('/tenants/select', 'SelectTenantController@index')->name('select.tenant');
+Route::post('/tenants/select', 'SelectTenantController@store')->name('select.tenant.store');
+```
+
+**Your SelectTenantController should have 3 methods as follows...**
+```
+public function __construct()
+{
+    $this->middleware('auth');
+}
+
+public function index()
+{
+    $user = Auth::user();
+    $tenantUsers = $user->tenantUser()->get();
+
+    return view('tenants.select', compact('tenantUsers'));
+}
+
+public function store(Request $request)
+{
+    session()->put('selected-tenant', $request->input('selectedTenant'));
+
+    return redirect()->route('dashboard');
+}
+```
+Build out your view to select a company/tenant and submit that to the store method
 
 # Questions #
 Twitter: [@gamerwalt](https://twitter.com/gamerwalt)
