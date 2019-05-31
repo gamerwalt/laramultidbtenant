@@ -30,7 +30,6 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
         $this->setup();
         $this->registerCommands();
         $this->registerSingletons();
-        $this->registerRoutes();
     }
 
     /**
@@ -61,22 +60,6 @@ class LaraMultiDbTenantServiceProvider extends ServiceProvider
 
         $laraMultidbTenant = $this->app['laramultitenantdb'];
         $laraMultidbTenant->boot($tenantModel, $prefix);
-    }
-
-    /**
-     * Register the routes.
-     *
-     * @return void
-     */
-    protected function registerRoutes()
-    {
-        Route::group([
-            'prefix' => config('laramultidbtenant.routepath'),
-            'namespace' => 'gamerwalt\LaraMultiDbTenant\Http\Controllers',
-            'middleware' => 'authTenant',
-        ], function () {
-            $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
-        });
     }
 
 
